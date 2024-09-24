@@ -156,7 +156,6 @@ const ProfileBillingAddress: React.FC<MyInformationProps> = ({
             required
             data-testid="billing-country-code-select"
           >
-            <option value="">-</option>
             {regionOptions.map((option, i) => {
               return (
                 <option key={i} value={option.value}>

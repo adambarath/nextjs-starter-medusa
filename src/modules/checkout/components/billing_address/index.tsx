@@ -39,6 +39,8 @@ const BillingAddress = ({
     })
   }, [cart?.billing_address])
 
+  const regionOptions = cart?.region ? [cart?.region] : []
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLInputElement | HTMLSelectElement
@@ -109,7 +111,7 @@ const BillingAddress = ({
         <CountrySelect
           name="billing_address.country_code"
           autoComplete="country"
-          region={cart?.region}
+          regions={regionOptions}
           value={formData["billing_address.country_code"]}
           onChange={handleChange}
           required

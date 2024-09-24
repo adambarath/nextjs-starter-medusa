@@ -15,7 +15,7 @@ import Modal from "@modules/common/components/modal"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 import { addCustomerShippingAddress } from "@modules/account/actions"
 
-const AddAddress = ({ region }: { region: Region }) => {
+const AddAddress = ({ regions }: { regions: Region[] }) => {
   const t = useScopedI18n("account.address")
   const [successState, setSuccessState] = useState(false)
   const { state, open, close: closeModal } = useToggleState(false)
@@ -119,7 +119,7 @@ const AddAddress = ({ region }: { region: Region }) => {
                 data-testid="state-input"
               />
               <CountrySelect
-                region={region}
+                regions={regions}
                 name="country_code"
                 required
                 autoComplete="country"

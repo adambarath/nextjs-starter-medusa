@@ -5,7 +5,7 @@ import { getI18n, setStaticParams } from "../../../../../../locales/server"
 
 import AddressBook from "@modules/account/components/address-book"
 
-import { getCustomer, getRegion } from "@lib/data"
+import { getCustomer, listRegions } from "@lib/data"
 
 import { headers } from "next/headers"
 
@@ -27,9 +27,9 @@ export default async function Addresses({ params }: Props) {
   const nextHeaders = headers()
   const countryCode = nextHeaders.get("next-url")?.split("/")[1] || ""
   const customer = await getCustomer()
-  const region = await getRegion(countryCode)
+  const regions = await listRegions()
 
-  if (!customer || !region) {
+  if (!customer || !regions) {
     notFound()
   }
 
@@ -43,7 +43,7 @@ export default async function Addresses({ params }: Props) {
           {t("page.adresses.shipping.desc")}
         </p>
       </div>
-      <AddressBook customer={customer} region={region} />
+      <AddressBook customer={customer} regions={regions} />
     </div>
   )
 }

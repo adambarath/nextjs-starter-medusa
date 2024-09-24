@@ -12,9 +12,9 @@ import { Region } from "@medusajs/medusa"
 const CountrySelect = forwardRef<
   HTMLSelectElement,
   NativeSelectProps & {
-    region?: Region
+    regions?: Region[]
   }
->(({ placeholder = null, region, defaultValue, ...props }, ref) => {
+>(({ placeholder = null, regions, defaultValue, ...props }, ref) => {
   const t = useI18n()
   placeholder = t("account.address.country_code")
 
@@ -25,16 +25,18 @@ const CountrySelect = forwardRef<
     () => innerRef.current
   )
 
-  const countryOptions = useMemo(() => {
-    if (!region) {
-      return []
-    }
-
-    return region.countries.map((country) => ({
-      value: country.iso_2,
-      label: country.display_name,
-    }))
-  }, [region])
+  const regionOptions = useMemo(() => {
+    return (
+      regions
+        ?.map((region) => {
+          return region.countries.map((country) => ({
+            value: country.iso_2,
+            label: country.display_name,
+          }))
+        })
+        .flat() || []
+    )
+  }, [regions])
 
   return (
     <NativeSelect
@@ -43,7 +45,7 @@ const CountrySelect = forwardRef<
       defaultValue={defaultValue}
       {...props}
     >
-      {countryOptions.map(({ value, label }, index) => (
+      {regionOptions.map(({ value, label }, index) => (
         <option key={index} value={value}>
           {label}
         </option>

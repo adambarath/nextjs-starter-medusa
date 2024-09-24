@@ -20,13 +20,13 @@ import { useFormState } from "react-dom"
 import { SubmitButton } from "@modules/checkout/components/submit-button"
 
 type EditAddressProps = {
-  region: Region
+  regions: Region[]
   address: Address
   isActive?: boolean
 }
 
 const EditAddress: React.FC<EditAddressProps> = ({
-  region,
+  regions,
   address,
   isActive = false,
 }) => {
@@ -199,7 +199,7 @@ const EditAddress: React.FC<EditAddressProps> = ({
               />
               <CountrySelect
                 name="country_code"
-                region={region}
+                regions={regions}
                 required
                 autoComplete="country"
                 defaultValue={address.country_code || undefined}

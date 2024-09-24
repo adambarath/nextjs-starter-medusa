@@ -66,6 +66,8 @@ const ShippingAddress = ({
     })
   }, [cart?.shipping_address, cart?.email])
 
+  const regionOptions = cart?.region ? [cart?.region] : []
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLInputElement | HTMLSelectElement
@@ -144,7 +146,7 @@ const ShippingAddress = ({
         <CountrySelect
           name="shipping_address.country_code"
           autoComplete="country"
-          region={cart?.region}
+          regions={regionOptions}
           value={formData["shipping_address.country_code"]}
           onChange={handleChange}
           required
