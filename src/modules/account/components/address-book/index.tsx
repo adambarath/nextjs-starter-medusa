@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react"
 
 import AddAddress from "../address-card/add-address"

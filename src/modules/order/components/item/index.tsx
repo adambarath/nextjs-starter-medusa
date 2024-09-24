@@ -1,3 +1,5 @@
+"use client"
+
 import { HttpTypes } from "@medusajs/types"
 import { Table, Text } from "@medusajs/ui"
 
@@ -15,7 +17,7 @@ const Item = ({ item }: ItemProps) => {
     <Table.Row className="w-full" data-testid="product-row">
       <Table.Cell className="!pl-0 p-4 w-24">
         <div className="flex w-16">
-          <Thumbnail thumbnail={item.thumbnail} size="square" />
+          <Thumbnail thumbnail={item?.thumbnail} size="square" />
         </div>
       </Table.Cell>
 
@@ -26,7 +28,14 @@ const Item = ({ item }: ItemProps) => {
         >
           {item.title}
         </Text>
-        <LineItemOptions variant={item.variant} data-testid="product-variant" />
+        {(item?.variant as HttpTypes.StoreProductVariant) ? (
+          <LineItemOptions
+            variant={item.variant as HttpTypes.StoreProductVariant}
+            data-testid="product-variant"
+          />
+        ) : (
+          <></>
+        )}
       </Table.Cell>
 
       <Table.Cell className="!pr-0">

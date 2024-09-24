@@ -1,5 +1,7 @@
 "use client"
 
+import { useI18n, useScopedI18n, I18nProviderClient } from '../../../../locales/client'
+
 import { Button } from "@medusajs/ui"
 import { isEqual } from "lodash"
 import { useParams } from "next/navigation"
@@ -35,6 +37,8 @@ export default function ProductActions({
   const [options, setOptions] = useState<Record<string, string | undefined>>({})
   const [isAdding, setIsAdding] = useState(false)
   const countryCode = useParams().countryCode as string
+
+  const t = useScopedI18n("product")
 
   // If there is only 1 variant, preselect the options
   useEffect(() => {
@@ -142,10 +146,10 @@ export default function ProductActions({
           data-testid="add-product-button"
         >
           {!selectedVariant
-            ? "Select variant"
+            ? t("variant")
             : !inStock
-            ? "Out of stock"
-            : "Add to cart"}
+            ? t("outof")
+            : t("addtocart")}
         </Button>
         <MobileActions
           product={product}

@@ -1,5 +1,7 @@
 "use client"
 
+import { useI18n, useScopedI18n } from '../../../../../locales/client'
+
 import FilterRadioGroup from "@modules/common/components/filter-radio-group"
 
 export type SortOptions = "price_asc" | "price_desc" | "created_at"
@@ -10,21 +12,6 @@ type SortProductsProps = {
   "data-testid"?: string
 }
 
-const sortOptions = [
-  {
-    value: "created_at",
-    label: "Latest Arrivals",
-  },
-  {
-    value: "price_asc",
-    label: "Price: Low -> High",
-  },
-  {
-    value: "price_desc",
-    label: "Price: High -> Low",
-  },
-]
-
 const SortProducts = ({
   "data-testid": dataTestId,
   sortBy,
@@ -34,9 +21,25 @@ const SortProducts = ({
     setQueryParams("sortBy", value)
   }
 
+  const t = useScopedI18n('store')
+  const sortOptions = [
+    {
+      value: "created_at",
+      label: t("created_at"),
+    },
+    {
+      value: "price_asc",
+      label: t("price_asc"),
+    },
+    {
+      value: "price_desc",
+      label: t("price_desc"),
+    },
+  ]
+
   return (
     <FilterRadioGroup
-      title="Sort by"
+      title={t("sort")}
       items={sortOptions}
       value={sortBy}
       handleChange={handleChange}

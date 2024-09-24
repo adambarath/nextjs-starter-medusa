@@ -1,6 +1,8 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { getI18n, setStaticParams } from "../../../../../locales/server"
+
 import { getCategoryByHandle, listCategories } from "@lib/data/categories"
 import { listRegions } from "@lib/data/regions"
 import { StoreProductCategory, StoreRegion } from "@medusajs/types"
@@ -56,8 +58,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       product_categories[product_categories.length - 1].description ??
       `${title} category.`
 
+    const t = await getI18n()
+    const storeName = t("store.name")
+
     return {
-      title: `${title} | Medusa Store`,
+      title: `${title} | ${storeName}`,
       description,
       alternates: {
         canonical: `${params.category.join("/")}`,
@@ -69,6 +74,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function CategoryPage({ params, searchParams }: Props) {
+  setStaticParams(params.countryCode)
   const { sortBy, page } = searchParams
 
   const { product_categories } = await getCategoryByHandle(

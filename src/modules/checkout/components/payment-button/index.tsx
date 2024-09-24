@@ -1,5 +1,7 @@
 "use client"
 
+import { useScopedI18n } from '../../../../locales/client'
+
 import { Button } from "@medusajs/ui"
 import { OnApproveActions, OnApproveData } from "@paypal/paypal-js"
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js"
@@ -20,6 +22,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
   cart,
   "data-testid": dataTestId,
 }) => {
+
   const notReady =
     !cart ||
     !cart.shipping_address ||
@@ -66,6 +69,8 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
 const GiftCardPaymentButton = () => {
   const [submitting, setSubmitting] = useState(false)
 
+  const t = useScopedI18n("checkout.payment")
+
   const handleOrder = async () => {
     setSubmitting(true)
     await placeOrder()
@@ -77,7 +82,7 @@ const GiftCardPaymentButton = () => {
       isLoading={submitting}
       data-testid="submit-order-button"
     >
-      Place order
+      {t("place_order")}
     </Button>
   )
 }
@@ -93,6 +98,8 @@ const StripePaymentButton = ({
 }) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const t = useScopedI18n("checkout.payment")
 
   const onPaymentCompleted = async () => {
     await placeOrder()
@@ -179,7 +186,7 @@ const StripePaymentButton = ({
         isLoading={submitting}
         data-testid={dataTestId}
       >
-        Place order
+        {t("place_order")}
       </Button>
       <ErrorMessage
         error={errorMessage}
@@ -200,6 +207,8 @@ const PayPalPaymentButton = ({
 }) => {
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  const t = useScopedI18n("checkout.payment")
 
   const onPaymentCompleted = async () => {
     await placeOrder()
@@ -223,13 +232,13 @@ const PayPalPaymentButton = ({
       ?.authorize()
       .then((authorization) => {
         if (authorization.status !== "COMPLETED") {
-          setErrorMessage(`An error occurred, status: ${authorization.status}`)
+          setErrorMessage(t("error_params") + `: ${authorization.status}`)
           return
         }
         onPaymentCompleted()
       })
       .catch(() => {
-        setErrorMessage(`An unknown error occurred, please try again.`)
+        setErrorMessage(t("error_unknown"))
         setSubmitting(false)
       })
   }
@@ -260,6 +269,7 @@ const PayPalPaymentButton = ({
 }
 
 const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
+  const t = useScopedI18n("checkout")
   const [submitting, setSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
@@ -288,7 +298,7 @@ const ManualTestPaymentButton = ({ notReady }: { notReady: boolean }) => {
         size="large"
         data-testid="submit-order-button"
       >
-        Place order
+        {t("placeorder")}
       </Button>
       <ErrorMessage
         error={errorMessage}

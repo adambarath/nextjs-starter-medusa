@@ -1,5 +1,7 @@
 "use client"
 
+import { useScopedI18n } from '../../../../locales/client'
+
 import { convertToLocale } from "@lib/util/money"
 import { InformationCircleSolid } from "@medusajs/icons"
 import { Tooltip } from "@medusajs/ui"
@@ -28,12 +30,17 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
     gift_card_total,
   } = totals
 
+  const t = useScopedI18n("cart")
+
   return (
     <div>
       <div className="flex flex-col gap-y-2 txt-medium text-ui-fg-subtle ">
         <div className="flex items-center justify-between">
           <span className="flex gap-x-1 items-center">
-            Subtotal (excl. shipping and taxes)
+            {t("subtotal")}
+            {/* <Tooltip content={t("taxes_desc")}>
+              <InformationCircleSolid color="var(--fg-muted)" />
+            </Tooltip> */}
           </span>
           <span data-testid="cart-subtotal" data-value={subtotal || 0}>
             {convertToLocale({ amount: subtotal ?? 0, currency_code })}
@@ -41,7 +48,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
         </div>
         {!!discount_total && (
           <div className="flex items-center justify-between">
-            <span>Discount</span>
+            <span>{t("discount")}</span>
             <span
               className="text-ui-fg-interactive"
               data-testid="cart-discount"
@@ -53,20 +60,20 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
           </div>
         )}
         <div className="flex items-center justify-between">
-          <span>Shipping</span>
+          <span>{t("shipping")}</span>
           <span data-testid="cart-shipping" data-value={shipping_total || 0}>
             {convertToLocale({ amount: shipping_total ?? 0, currency_code })}
           </span>
         </div>
         <div className="flex justify-between">
-          <span className="flex gap-x-1 items-center ">Taxes</span>
+          <span className="flex gap-x-1 items-center ">{t("taxes")}</span>
           <span data-testid="cart-taxes" data-value={tax_total || 0}>
             {convertToLocale({ amount: tax_total ?? 0, currency_code })}
           </span>
         </div>
         {!!gift_card_total && (
           <div className="flex items-center justify-between">
-            <span>Gift card</span>
+            <span>{t("giftcard")}</span>
             <span
               className="text-ui-fg-interactive"
               data-testid="cart-gift-card-amount"
@@ -80,7 +87,7 @@ const CartTotals: React.FC<CartTotalsProps> = ({ totals }) => {
       </div>
       <div className="h-px w-full border-b border-gray-200 my-4" />
       <div className="flex items-center justify-between text-ui-fg-base mb-2 txt-medium ">
-        <span>Total</span>
+        <span>{t("total")}</span>
         <span
           className="txt-xlarge-plus"
           data-testid="cart-total"

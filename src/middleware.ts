@@ -1,5 +1,6 @@
 import { HttpTypes } from "@medusajs/types"
 import { notFound } from "next/navigation"
+import { createI18nMiddleware } from 'next-international/middleware'
 import { NextRequest, NextResponse } from "next/server"
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_MEDUSA_BACKEND_URL
@@ -10,6 +11,11 @@ const regionMapCache = {
   regionMap: new Map<string, HttpTypes.StoreRegion>(),
   regionMapUpdated: Date.now(),
 }
+
+const I18nMiddleware = createI18nMiddleware({
+  locales: ['us', 'hu'],
+  defaultLocale: 'us',
+})
 
 async function getRegionMap() {
   const { regionMap, regionMapUpdated } = regionMapCache
@@ -108,7 +114,7 @@ export async function middleware(request: NextRequest) {
     (!isOnboarding || onboardingCookie) &&
     (!cartId || cartIdCookie)
   ) {
-    return NextResponse.next()
+    return I18nMiddleware(request)
   }
 
   const redirectPath =

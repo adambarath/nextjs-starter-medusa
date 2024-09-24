@@ -1,14 +1,15 @@
 import { Metadata } from "next"
 
+import { getI18n, setStaticParams } from "../../../locales/server"
+
 import FeaturedProducts from "@modules/home/components/featured-products"
 import Hero from "@modules/home/components/hero"
 import { getCollectionsWithProducts } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
 
 export const metadata: Metadata = {
-  title: "Medusa Next.js Starter Template",
-  description:
-    "A performant frontend ecommerce starter template with Next.js 14 and Medusa.",
+  title: "store.title",
+  description: "store.desc",
 }
 
 export default async function Home({
@@ -16,6 +17,11 @@ export default async function Home({
 }: {
   params: { countryCode: string }
 }) {
+  setStaticParams(countryCode)
+  const t = await getI18n()
+  metadata.title = t("store.title")
+  metadata.description = t("store.desc")
+
   const collections = await getCollectionsWithProducts(countryCode)
   const region = await getRegion(countryCode)
 

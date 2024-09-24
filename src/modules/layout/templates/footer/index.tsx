@@ -1,3 +1,5 @@
+import { getI18n, getScopedI18n } from "../../../../locales/server"
+
 import { getCategoriesList } from "@lib/data/categories"
 import { getCollectionsList } from "@lib/data/collections"
 import { Text, clx } from "@medusajs/ui"
@@ -8,6 +10,7 @@ import MedusaCTA from "@modules/layout/components/medusa-cta"
 export default async function Footer() {
   const { collections } = await getCollectionsList(0, 6)
   const { product_categories } = await getCategoriesList(0, 6)
+  const scopedT = await getScopedI18n("footer")
 
   return (
     <footer className="border-t border-ui-border-base w-full">
@@ -18,14 +21,14 @@ export default async function Footer() {
               href="/"
               className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
             >
-              Medusa Store
+              {scopedT("store")}
             </LocalizedClientLink>
           </div>
           <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
             {product_categories && product_categories?.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="txt-small-plus txt-ui-fg-base">
-                  Categories
+                  {scopedT("categories")}
                 </span>
                 <ul
                   className="grid grid-cols-1 gap-2"
@@ -83,7 +86,7 @@ export default async function Footer() {
             {collections && collections.length > 0 && (
               <div className="flex flex-col gap-y-2">
                 <span className="txt-small-plus txt-ui-fg-base">
-                  Collections
+                  {scopedT("collections")}
                 </span>
                 <ul
                   className={clx(
@@ -145,7 +148,7 @@ export default async function Footer() {
         </div>
         <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
           <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Medusa Store. All rights reserved.
+            © {new Date().getFullYear()} {scopedT("store")}. {scopedT("rights")}
           </Text>
           <MedusaCTA />
         </div>

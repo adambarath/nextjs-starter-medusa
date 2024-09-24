@@ -1,5 +1,8 @@
 import { Suspense } from "react"
 
+import { I18nProviderClient } from "../../../../locales/client"
+import { getI18n, getScopedI18n, getCurrentLocale } from "../../../../locales/server"
+
 import { listRegions } from "@lib/data/regions"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
@@ -9,7 +12,10 @@ import SideMenu from "@modules/layout/components/side-menu"
 export default async function Nav() {
   const regions = await listRegions().then((regions: StoreRegion[]) => regions)
 
+  const t = await getScopedI18n("nav")
+
   return (
+    <I18nProviderClient locale={getCurrentLocale()}>
     <div className="sticky top-0 inset-x-0 z-50 group">
       <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base">
         <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
@@ -25,20 +31,20 @@ export default async function Nav() {
               className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
               data-testid="nav-store-link"
             >
-              Medusa Store
+              {t("title")}
             </LocalizedClientLink>
           </div>
 
           <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
             <div className="hidden small:flex items-center gap-x-6 h-full">
-              {process.env.NEXT_PUBLIC_FEATURE_SEARCH_ENABLED && (
+              {process.env.FEATURE_SEARCH_ENABLED && (
                 <LocalizedClientLink
                   className="hover:text-ui-fg-base"
                   href="/search"
                   scroll={false}
                   data-testid="nav-search-link"
                 >
-                  Search
+                  {t("search")}
                 </LocalizedClientLink>
               )}
               <LocalizedClientLink
@@ -46,7 +52,7 @@ export default async function Nav() {
                 href="/account"
                 data-testid="nav-account-link"
               >
-                Account
+                {t("account")}
               </LocalizedClientLink>
             </div>
             <Suspense
@@ -56,7 +62,7 @@ export default async function Nav() {
                   href="/cart"
                   data-testid="nav-cart-link"
                 >
-                  Cart (0)
+                  {t("cart")} (0)
                 </LocalizedClientLink>
               }
             >
@@ -66,5 +72,6 @@ export default async function Nav() {
         </nav>
       </header>
     </div>
+  </I18nProviderClient>
   )
 }

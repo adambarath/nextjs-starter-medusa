@@ -3,6 +3,8 @@
 import { XMark } from "@medusajs/icons"
 import React from "react"
 
+import { useScopedI18n } from "../../../locales/client"
+
 import Help from "@modules/order/components/help"
 import Items from "@modules/order/components/items"
 import OrderDetails from "@modules/order/components/order-details"
@@ -15,19 +17,19 @@ type OrderDetailsTemplateProps = {
   order: HttpTypes.StoreOrder
 }
 
-const OrderDetailsTemplate: React.FC<OrderDetailsTemplateProps> = ({
-  order,
-}) => {
+function OrderDetailsTemplate({ order }: OrderDetailsTemplateProps) {
+  const t = useScopedI18n("order")
+
   return (
     <div className="flex flex-col justify-center gap-y-4">
       <div className="flex gap-2 justify-between items-center">
-        <h1 className="text-2xl-semi">Order details</h1>
+        <h1 className="text-2xl-semi">{t("details")}</h1>
         <LocalizedClientLink
           href="/account/orders"
           className="flex gap-2 items-center text-ui-fg-subtle hover:text-ui-fg-base"
           data-testid="back-to-overview-button"
         >
-          <XMark /> Back to overview
+          <XMark /> {t("back")}
         </LocalizedClientLink>
       </div>
       <div

@@ -1,5 +1,7 @@
 import { Metadata } from "next"
 
+import { getI18n, setStaticParams } from "../../../../../../locales/server"
+
 import ProfilePhone from "@modules/account//components/profile-phone"
 import ProfileBillingAddress from "@modules/account/components/profile-billing-address"
 import ProfileEmail from "@modules/account/components/profile-email"
@@ -11,11 +13,20 @@ import { listRegions } from "@lib/data/regions"
 import { getCustomer } from "@lib/data/customer"
 
 export const metadata: Metadata = {
-  title: "Profile",
-  description: "View and edit your Medusa Store profile.",
+  title: "page.profile.title",
+  description: "page.profile.desc",
 }
 
-export default async function Profile() {
+type Props = {
+  params: { countryCode: string; }
+}
+
+export default async function Profile({ params }: Props) {
+  setStaticParams(params.countryCode)
+  const t = await getI18n()
+  metadata.title = t("page.profile.title")
+  metadata.description = t("page.profile.desc")
+
   const customer = await getCustomer()
   const regions = await listRegions()
 
@@ -26,12 +37,8 @@ export default async function Profile() {
   return (
     <div className="w-full" data-testid="profile-page-wrapper">
       <div className="mb-8 flex flex-col gap-y-4">
-        <h1 className="text-2xl-semi">Profile</h1>
-        <p className="text-base-regular">
-          View and update your profile information, including your name, email,
-          and phone number. You can also update your billing address, or change
-          your password.
-        </p>
+        <h1 className="text-2xl-semi">{metadata.title}</h1>
+        <p className="text-base-regular">{t("page.profile.details")}</p>
       </div>
       <div className="flex flex-col gap-y-8 w-full">
         <ProfileName customer={customer} />

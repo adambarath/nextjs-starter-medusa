@@ -1,6 +1,9 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { getI18n, setStaticParams, getCurrentLocale } from "../../../../locales/server"
+
+
 import Wrapper from "@modules/checkout/components/payment-wrapper"
 import CheckoutForm from "@modules/checkout/templates/checkout-form"
 import CheckoutSummary from "@modules/checkout/templates/checkout-summary"
@@ -9,7 +12,11 @@ import { HttpTypes } from "@medusajs/types"
 import { getCustomer } from "@lib/data/customer"
 
 export const metadata: Metadata = {
-  title: "Checkout",
+  title: "checkout.title",
+}
+
+type Props = {
+  params: { countryCode: string; }
 }
 
 const fetchCart = async () => {
@@ -26,7 +33,11 @@ const fetchCart = async () => {
   return cart
 }
 
-export default async function Checkout() {
+export default async function Checkout({ params }: Props) {
+  setStaticParams(params.countryCode)
+  const t = await getI18n()
+  metadata.title = t("checkout.title")
+
   const cart = await fetchCart()
   const customer = await getCustomer()
 

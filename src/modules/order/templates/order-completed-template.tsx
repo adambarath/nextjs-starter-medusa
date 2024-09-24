@@ -1,5 +1,7 @@
 import { Heading } from "@medusajs/ui"
-import { cookies } from "next/headers"
+import { cookies } from "next/headers" // nope: "use client"
+
+import { getScopedI18n } from "../../../locales/server"
 
 import CartTotals from "@modules/common/components/cart-totals"
 import Help from "@modules/order/components/help"
@@ -14,10 +16,11 @@ type OrderCompletedTemplateProps = {
   order: HttpTypes.StoreOrder
 }
 
-export default function OrderCompletedTemplate({
+export default async function OrderCompletedTemplate({
   order,
 }: OrderCompletedTemplateProps) {
   const isOnboarding = cookies().get("_medusa_onboarding")?.value === "true"
+  const t = await getScopedI18n("order")
 
   return (
     <div className="py-6 min-h-[calc(100vh-64px)]">
@@ -31,12 +34,12 @@ export default function OrderCompletedTemplate({
             level="h1"
             className="flex flex-col gap-y-3 text-ui-fg-base text-3xl mb-4"
           >
-            <span>Thank you!</span>
-            <span>Your order was placed successfully.</span>
+            <span>{t("thanks")}</span>
+            <span>{t("success")}</span>
           </Heading>
           <OrderDetails order={order} />
           <Heading level="h2" className="flex flex-row text-3xl-regular">
-            Summary
+            {t("summary")}
           </Heading>
           <Items items={order.items} />
           <CartTotals totals={order} />

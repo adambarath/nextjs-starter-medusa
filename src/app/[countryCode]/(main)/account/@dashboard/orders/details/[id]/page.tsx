@@ -1,13 +1,15 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { getI18n, setStaticParams } from "../../../../../../../../locales/server"
+
 import OrderDetailsTemplate from "@modules/order/templates/order-details-template"
 import { retrieveOrder } from "@lib/data/orders"
 import { enrichLineItems } from "@lib/data/cart"
 import { HttpTypes } from "@medusajs/types"
 
 type Props = {
-  params: { id: string }
+  params: { countryCode: string; id: string }
 }
 
 async function getOrder(id: string) {
@@ -26,6 +28,8 @@ async function getOrder(id: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  setStaticParams(params.countryCode)
+  const t = await getI18n()
   const order = await getOrder(params.id).catch(() => null)
 
   if (!order) {
@@ -33,8 +37,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `Order #${order.display_id}`,
-    description: `View your order`,
+    title: t("page.order.title") + ` #${order.display_id}`,
+    description: t("page.order.desc"),
   }
 }
 

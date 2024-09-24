@@ -1,4 +1,5 @@
 import { clx } from "@medusajs/ui"
+import { useI18n, useScopedI18n, I18nProviderClient } from '../../../../locales/client'
 
 import { getProductPrice } from "@lib/util/get-product-price"
 import { HttpTypes } from "@medusajs/types"
@@ -15,6 +16,8 @@ export default function ProductPrice({
     variantId: variant?.id,
   })
 
+  const t = useScopedI18n("product")
+
   const selectedPrice = variant ? variantPrice : cheapestPrice
 
   if (!selectedPrice) {
@@ -28,7 +31,7 @@ export default function ProductPrice({
           "text-ui-fg-interactive": selectedPrice.price_type === "sale",
         })}
       >
-        {!variant && "From "}
+        {!variant && t("pricefrom")}
         <span
           data-testid="product-price"
           data-value={selectedPrice.calculated_price_number}
@@ -39,7 +42,7 @@ export default function ProductPrice({
       {selectedPrice.price_type === "sale" && (
         <>
           <p>
-            <span className="text-ui-fg-subtle">Original: </span>
+            <span className="text-ui-fg-subtle">{t("priceoriginal")} </span>
             <span
               className="line-through"
               data-testid="original-product-price"

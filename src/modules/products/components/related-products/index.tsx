@@ -1,3 +1,6 @@
+import { useI18n, useScopedI18n, I18nProviderClient } from '../../../../locales/client'
+import { getI18n, getScopedI18n, getCurrentLocale } from '../../../../locales/server'
+
 import Product from "../product-preview"
 import { getRegion } from "@lib/data/regions"
 import { getProductsList } from "@lib/data/products"
@@ -12,6 +15,7 @@ export default async function RelatedProducts({
   product,
   countryCode,
 }: RelatedProductsProps) {
+  const t = await getScopedI18n("product")
   const region = await getRegion(countryCode)
 
   if (!region) {
@@ -26,11 +30,11 @@ export default async function RelatedProducts({
   if (product.collection_id) {
     queryParams.collection_id = [product.collection_id]
   }
-  if (product.tags) {
-    queryParams.tags = product.tags
-      .map((t) => t.value)
-      .filter(Boolean) as string[]
-  }
+  // if (product.tags) {
+  //   queryParams.tags = product.tags
+  //     .map((t) => t.value)
+  //     .filter(Boolean) as string[]
+  // }
   queryParams.is_giftcard = false
 
   const products = await getProductsList({
@@ -50,10 +54,10 @@ export default async function RelatedProducts({
     <div className="product-page-constraint">
       <div className="flex flex-col items-center text-center mb-16">
         <span className="text-base-regular text-gray-600 mb-6">
-          Related products
+          {t("related")}
         </span>
         <p className="text-2xl-regular text-ui-fg-base max-w-lg">
-          You might also want to check out these products.
+          {t("related_sub")}
         </p>
       </div>
 

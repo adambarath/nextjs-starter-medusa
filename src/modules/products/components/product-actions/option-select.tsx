@@ -1,6 +1,9 @@
 import { HttpTypes } from "@medusajs/types"
 import { clx } from "@medusajs/ui"
 import React from "react"
+import { useI18n, useScopedI18n, I18nProviderClient } from '../../../../locales/client'
+
+// TODO: review import { onlyUnique } from "@lib/util/only-unique"
 
 type OptionSelectProps = {
   option: HttpTypes.StoreProductOption
@@ -18,12 +21,13 @@ const OptionSelect: React.FC<OptionSelectProps> = ({
   title,
   "data-testid": dataTestId,
   disabled,
-}) => {
-  const filteredOptions = option.values?.map((v) => v.value)
+}: OptionSelectProps) => {
+  const filteredOptions = option.values?.map((v) => v.value)// TODO: review + .filter(onlyUnique)
+  const t = useScopedI18n("product")
 
   return (
     <div className="flex flex-col gap-y-3">
-      <span className="text-sm">Select {title}</span>
+      <span className="text-sm">{t("select")} {title}</span>
       <div
         className="flex flex-wrap justify-between gap-2"
         data-testid={dataTestId}
