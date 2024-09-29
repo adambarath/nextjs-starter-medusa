@@ -22,6 +22,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
   cart,
   "data-testid": dataTestId,
 }) => {
+  const t = useScopedI18n("checkout.payment")
 
   const notReady =
     !cart ||
@@ -62,7 +63,7 @@ const PaymentButton: React.FC<PaymentButtonProps> = ({
         />
       )
     default:
-      return <Button disabled>Select a payment method</Button>
+      return <Button disabled>{t("select")}</Button>
   }
 }
 

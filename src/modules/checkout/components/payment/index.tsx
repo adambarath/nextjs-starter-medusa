@@ -220,9 +220,9 @@ const Payment = ({
             data-testid="submit-payment-button"
           >
             {!activeSession && isStripeFunc(selectedPaymentMethod) ? (
-              <>{t("checkout.payment.enter_card")}</>
+              <span>{t("checkout.payment.enter_card")}</span>
             ) : (
-              <>{t("checkout.payment.continue")}</>
+              <span>{t("checkout.payment.continue")}</span>
             )}
           </Button>
         </div>

@@ -84,6 +84,7 @@ export default {
   "checkout.addgift": "Add gift card or discount code",
   "checkout.entercode": "Please enter code",
   "checkout.payment.title": "Payment",
+  "checkout.payment.select": "Select a payment method",
   "checkout.payment.gift": "Gift card",
   "checkout.payment.method": "Payment method",
   "checkout.payment.anotherstep": "Another step will appear",
